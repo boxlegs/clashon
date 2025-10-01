@@ -13,8 +13,9 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(message)s')
 
 headers = { "Authorization": f'Bearer {API_TOKEN}'}
 
-def getclan():
-    return requests.get(f'https://api.clashroyale.com/v1/clans?name={CLAN_NAME}', headers = headers).json()["items"][0]
+def getclan(clan_name):
+    clan_name = urllib.parse.quote(clan_name, safe='')
+    return requests.get(f'https://api.clashroyale.com/v1/clans?name={clan_name}', headers = headers).json()["items"][0]
 
 def getbattlelog(player_tag):
     player_tag = urllib.parse.quote(player_tag, safe='')
@@ -36,13 +37,8 @@ def getmembers(clan_tag):
     for player in playerlist['items']:
         player_tag = urllib.parse.quote(player['tag'], safe='')
         player_data.append(requests.get(f'https://api.clashroyale.com/v1/players/{player_tag}', headers = headers).json())
-        if player["name"] == "dogbag":
-            print(player["tag"])
 
     return player_data
 
         
-clan = getclan()
-members=getmembers(clan["tag"])
-df = pd.DataFrame(members)
 
