@@ -4,6 +4,7 @@ from royaleutils.player import *
 from royaleutils.utils import call_api
 import logging
 import os
+import concurrent.futures
 
 load_dotenv()
 API_TOKEN = os.getenv('API_TOKEN')
@@ -31,6 +32,19 @@ class Clan(object):
         self.members = get_members(self.clan_tag)
     
     
+    def to_dataframe(self):
+        member_data = []
+        for member in self.members:
+            member_data.append({
+                "Name": member.name,
+                "Tag": member.tag,
+                "Trophies": member.trophies,
+                "Role": member.role,
+                "Arena": member.arena,
+                "Donations": member.donations,
+                "Donations Received": member.donations_received
+            })
+        return pd.DataFrame(member_data)
 
 def get_clan(clan_name=CLAN_NAME):
     return call_api(f'https://api.clashroyale.com/v1/clans?name={clan_name}').json()["items"][0]
@@ -45,8 +59,9 @@ def get_member_data(clan_tag, get_details=False):
     player_data = []
 
     if get_details:
-        for player in playerlist['items']:
-            player_data.append(get_player_data(player['tag']))
+        # Parallelize get_player_data for each player using ThreadPoolExecutor
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            player_data = list(executor.map(lambda player: get_player_data(player['tag']), playerlist['items']))
         return player_data
 
     return playerlist['items']

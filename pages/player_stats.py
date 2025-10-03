@@ -11,7 +11,15 @@ load_dotenv()
 API_TOKEN = os.getenv('API_TOKEN')
 CLAN_NAME = os.getenv('CLAN_NAME')
 
-membernames = [player.player_name for player in st.session_state.members]
+st.image("https://etgeekera.com/wp-content/uploads/2016/05/clash-royale-banner.jpg", use_container_width=True)
+
+if "clan" not in st.session_state: 
+    st.session_state.clan = Clan(CLAN_NAME)
+clan = st.session_state.clan
+
+members = get_members(clan.clan_tag)
+
+membernames = [player.name for player in members]
 
 player_stats_page = st.set_page_config(
     page_title="Player Stats",
@@ -21,11 +29,11 @@ player_stats_page = st.set_page_config(
     )
     
 selection = st.selectbox('Select Player Name', options=membernames)
-player = next((player for player in st.session_state.members if player.player_name == selection), None)
+player = next((player for player in members if player.name == selection), None)
 df = player.get_battlelog().to_dataframe(battle_types=["PvP", "trail"])
 
-st.title(f"{player.player_name}'s Battle Log")
-st.write(f"Battle log DF for {player.player_name} in clan {CLAN_NAME}")
+st.title(f"{player.name}'s Battle Log")
+st.write(f"Battle log DF for {player.name} in clan {CLAN_NAME}")
 st.write(df)
 
-refresh_button()
+# refresh_button()

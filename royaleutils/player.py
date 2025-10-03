@@ -8,16 +8,21 @@ class Player(object):
         if not player_data and player_tag:
             player_data = get_player_data(player_tag)
         
-        self.player_tag = player_data["tag"]
-        self.player_name = player_data["name"]
-        self.player_name = player_data["arena"]["name"]
+        self.tag = player_data["tag"]
+        self.name = player_data["name"]
+        self.arena = player_data["arena"]["name"]
+        self.trophies = player_data["trophies"]
         self.battlelog = None
+        self.role = player_data["role"]
+        self.donations = player_data["donations"]
+        self.donations_received = player_data["donationsReceived"]
+        
 
     def generate_battlelog(self):
         """
         Parse battle log from the /battlelog endpoint 
         """ 
-        self.battlelog = BattleLog(get_battlelog_data(self.player_tag))
+        self.battlelog = BattleLog(get_battlelog_data(self.tag))
         return
 
     def get_battlelog(self):

@@ -1,7 +1,8 @@
 import pandas as pd
 import logging,requests,urllib
+from royaleutils.card import Card
 from royaleutils.utils import call_api
-import datetime
+
 
 # TODO: Support for parsing 2v2 battles
 class Battle(object):
@@ -15,7 +16,8 @@ class Battle(object):
         self.team_tag = team["tag"]
         self.team_name = team["name"]
         self.team_crowns = team["crowns"]
-
+        self.team_elixir_leaked = team.get("elixirLeaked", 0)
+        
         # Parse opponent data
         opponent = battle_data["opponent"][0]
 
@@ -23,9 +25,13 @@ class Battle(object):
         self.opponent_name = opponent["name"]
         self.opponent_crowns = opponent["crowns"]
         self.player_tag = team["tag"]
-
+ 
         self.is_winner = self.team_crowns > self.opponent_crowns
+       
+        self.team_cards = [Card(card_data) for card_data in team.get("cards", [])]
+        self.opponent_cards = [Card(card_data) for card_data in opponent.get("cards", [])]
         
+        logging.debug(self.team_cards)
         
     def dump(self):
         return {
@@ -36,7 +42,7 @@ class Battle(object):
                         "Opponent Crowns": self.opponent_crowns,
                         "Team Crowns": self.team_crowns,
                         "Team Player Tag": self.team_tag,
-                        "Battle Time": datetime.datetime.strptime(self.battle_time, "%Y%m%dT%H%M%S.%fZ").strftime("%H:%M %a"),
+                        "Battle Time": self.battle_time,
                         "Is Winner": self.is_winner
                     }
     
@@ -55,7 +61,7 @@ class PvPBattle(Battle):
         self.opponent_starting_trophies = opponent.get("startingTrophies", 0)
         self.opponent_trophy_change = opponent.get("trophyChange", 0)
         self.opponent_ending_trophies = opponent.get("startingTrophies", 0) + opponent.get("trophyChange", 0)
-
+        
     def dump(self):
         """
         Dumps PvPBattle object to JSON.
@@ -72,8 +78,12 @@ class PvPBattle(Battle):
                         "Team Crowns": self.team_crowns,
                         "Team Starting Trophies": self.team_starting_trophies,
                         "Team Ending Trophies": self.team_ending_trophies,
-                        "Battle Time": datetime.datetime.strptime(self.battle_time, "%Y%m%dT%H%M%S.%fZ").strftime("%H:%M %a"),
-                        "Is Winner": self.is_winner
+                        "Battle Time": self.battle_time,
+                        "Is Winner": self.is_winner,
+                        "trophyChange": self.team_trophy_change,
+                        "Elixir Leaked": self.team_elixir_leaked,
+                        "Team Cards": [card.name for card in self.team_cards],
+                        "Opponent Cards": [card.name for card in self.team_cards]
                     }
         
 class BattleLog(object):
