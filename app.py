@@ -16,8 +16,8 @@ if "clan" not in st.session_state:
     st.session_state.clan = Clan(CLAN_NAME)
     
 pages = [
-    st.Page("pages/player_stats.py", icon="🏰", title="Player Stats"),
-    st.Page("pages/clan_stats.py", icon="🏯", title="Clan Stats")
+    st.Page("pages/clan_stats.py", icon="🏯", title="Clan Stats"),
+    st.Page("pages/player_stats.py", icon="🏰", title="Player Stats")
 ]   
 
 st.navigation(pages).run()
