@@ -1,8 +1,9 @@
-import royaleutils.utils
 import pandas as pd
-import logging
 
 class Card(object):
+    """
+    Represents a Clash card.
+    """
     def __init__(self, card_data):
         self.name = card_data.get("name")
         self.id = card_data.get("id")

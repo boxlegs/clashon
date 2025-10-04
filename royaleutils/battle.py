@@ -113,7 +113,7 @@ class BattleLog(object):
         """
         Dumps BattleLog to pandas DataFrame.
         """
-        logging.info(f"Converting {len(self.battles)} battles to DataFrame")
+        logging.debug(f"Converting {len(self.battles)} battles to DataFrame")
 
         data = []
         for battle in self.battles:

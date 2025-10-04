@@ -2,6 +2,7 @@
 from royaleutils.player import *
 from royaleutils.clan import *
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
 import pandas as pd
 from dotenv import load_dotenv
 import plots
@@ -10,8 +11,6 @@ import os
 load_dotenv()
 API_TOKEN = os.getenv('API_TOKEN')
 CLAN_NAME = os.getenv('CLAN_NAME')
-
-
 
 # Start Loading plots
 if "clan" not in st.session_state: 
