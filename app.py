@@ -2,7 +2,6 @@
 from royaleutils.player import *
 from royaleutils.clan import *
 import streamlit as st
-from streamlit_autorefresh import st_autorefresh
 import pandas as pd
 from dotenv import load_dotenv
 import plots
