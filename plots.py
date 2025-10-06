@@ -54,6 +54,38 @@ def WinsVsLossesPlot(clan):
 
     return fig
 
+def PowerRankingsPlot(members):
+    # Convert Player objects into a DataFrame
+    df = pd.DataFrame([{
+        "name": m.name,
+        "trophies": m.trophies,
+        "total_games": m.total_games
+    } for m in members])
+
+    # Create scatter plot: trophies vs total_games
+    fig = px.scatter(
+        df,
+        x="total_games",
+        y="trophies",
+        color="name",
+        text="name",
+        size=[5] * len(df),
+        size_max=15,
+        color_discrete_sequence=px.colors.sequential.Viridis,
+        hover_data={"trophies": True, "total_games": True, "name": True}
+    )
+
+    fig.update_traces(textposition="top center", textfont_size=18)
+    fig.update_layout(
+        title="Trophies vs Total Games per Player",
+        xaxis_title="Total Games",
+        yaxis_title="Trophies",
+        legend_title="Player",
+        height=600
+    )
+    
+    return fig
+
 
 def _get_battle_df(member):
     battlelog = member.get_battlelog()
@@ -236,3 +268,7 @@ def MegaKnightLossesPlot(members):
     )
     
     return fig
+
+
+# TODO: # Trophies to games played
+# TODO: # Games lost to opponents with lower level cards

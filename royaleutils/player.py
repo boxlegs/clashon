@@ -12,6 +12,11 @@ class Player(object):
         self.name = player_data["name"]
         self.arena = player_data["arena"]["name"]
         self.trophies = player_data["trophies"]
+        self.total_games = player_data["battleCount"]
+        self.wins = player_data["wins"]
+        self.losses = player_data["losses"]
+        self.three_crown_wins = player_data["threeCrownWins"]
+        self.favourite_card = player_data.get("currentFavouriteCard", None)
         self.battlelog = None
         self.role = player_data["role"]
         self.donations = player_data["donations"]

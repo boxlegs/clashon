@@ -67,5 +67,5 @@ def get_member_data(clan_tag, get_details=False):
     return playerlist['items']
 
 def get_members(clan_tag):
-    members = get_member_data(clan_tag)
+    members = get_member_data(clan_tag, get_details=True)
     return [Player(player_data=member) for member in members]

@@ -35,8 +35,11 @@ st.markdown(f"**Clan Member Count:** {clan.clan_member_count}")
 df = pd.DataFrame(clan.to_dataframe())
 st.dataframe(df)
 
-st.markdown(f"## Daily Progress")
+st.markdown(f"## Historical Wins Vs Losses")
 st.plotly_chart(plots.WinsVsLossesPlot(st.session_state.clan), use_container_width=True)
+
+st.markdown(f"## Power Rankings")
+st.plotly_chart(plots.PowerRankingsPlot(members), use_container_width=True)
 
 st.markdown(f"## Trophy Changes (last 24h)")
 st.plotly_chart(plots.TrophyChangesPlot(members), use_container_width=True)
