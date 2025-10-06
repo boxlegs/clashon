@@ -297,8 +297,6 @@ def LowerLevelOpponents(members):
 
             team_avg = sum(c.max_level for c in b.team_cards) / len(b.team_cards)
             opp_avg = sum(c.max_level for c in b.opponent_cards) / len(b.opponent_cards)
-
-            print(team_avg, opp_avg)
             
             # Condition: player lost AND opponent had lower avg card level
             if b.opponent_crowns > b.team_crowns and opp_avg < team_avg:
