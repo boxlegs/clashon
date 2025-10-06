@@ -88,6 +88,7 @@ def PowerRankingsPlot(members):
 
 
 def _get_battle_df(member):
+    
     battlelog = member.get_battlelog()
     df_battle = battlelog.to_dataframe(battle_types=["PvP"])
     if df_battle.empty:
@@ -269,6 +270,59 @@ def MegaKnightLossesPlot(members):
     
     return fig
 
+
+def LowerLevelOpponents(members):
+    player_names = []
+    losses_to_lower = []
+
+    now_brisbane = pd.Timestamp.utcnow().tz_convert("Australia/Brisbane")
+
+    for member in members:
+        battlelog = member.get_battlelog()  # returns BattleLog
+        battles = battlelog.get_battles()   # list of Battle/PvPBattle
+
+        count = 0
+        for b in battles:
+            if b.type != "PvP":
+                continue
+
+            # Parse battle time into datetime
+            battle_time = pd.to_datetime(b.battle_time, utc=True).tz_convert("Australia/Brisbane")
+            if battle_time < now_brisbane - pd.Timedelta(hours=24):
+                continue
+
+            # Skip if no cards
+            if not b.team_cards or not b.opponent_cards:
+                continue
+
+            team_avg = sum(c.max_level for c in b.team_cards) / len(b.team_cards)
+            opp_avg = sum(c.max_level for c in b.opponent_cards) / len(b.opponent_cards)
+
+            print(team_avg, opp_avg)
+            
+            # Condition: player lost AND opponent had lower avg card level
+            if b.opponent_crowns > b.team_crowns and opp_avg < team_avg:
+                count += 1
+
+        player_names.append(member.name)
+        losses_to_lower.append(count)
+
+    # Bar chart
+    fig = px.bar(
+        x=player_names,
+        y=losses_to_lower,
+        labels={"x": "Player", "y": "Losses to Lower-Level Opponents"},
+        title="Losses vs Lower-Level Opponents (last 24h)",
+        text=losses_to_lower
+    )
+    fig.update_traces(textposition="outside")
+    fig.update_layout(
+        xaxis_title="Player",
+        yaxis_title="Losses to Lower-Level Opponents",
+        height=500
+    )
+
+    return fig
 
 # TODO: # Trophies to games played
 # TODO: # Games lost to opponents with lower level cards

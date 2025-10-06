@@ -83,7 +83,9 @@ class PvPBattle(Battle):
                         "trophyChange": self.team_trophy_change,
                         "Elixir Leaked": self.team_elixir_leaked,
                         "Team Cards": [card.name for card in self.team_cards],
-                        "Opponent Cards": [card.name for card in self.team_cards]
+                        "Opponent Cards": [card.name for card in self.opponent_cards],
+                        "Team Avg Card Level":  sum(card.max_level for card in self.team_cards)/len(self.team_cards),
+                        "Opponent Avg Card Level":  sum(card.max_level for card in self.opponent_cards)/len(self.opponent_cards)
                     }
         
 class BattleLog(object):

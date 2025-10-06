@@ -52,3 +52,6 @@ st.plotly_chart(plots.ElixirLeakedPlot(members), use_container_width=True)
 
 st.markdown(f"## Battles Lost to Mega Knight (last 24h\)")
 st.plotly_chart(plots.MegaKnightLossesPlot(members), use_container_width=True)
+
+st.markdown(f"## Battles Lost to Opponents with Lower Level Cards")
+st.plotly_chart(plots.LowerLevelOpponents(members), use_container_width=True)
