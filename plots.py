@@ -321,6 +321,3 @@ def LowerLevelOpponents(members):
     )
 
     return fig
-
-# TODO: # Trophies to games played
-# TODO: # Games lost to opponents with lower level cards
