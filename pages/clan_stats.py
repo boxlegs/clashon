@@ -41,8 +41,11 @@ st.plotly_chart(plots.WinsVsLossesPlot(st.session_state.clan), use_container_wid
 st.markdown(f"## Power Rankings")
 st.plotly_chart(plots.PowerRankingsPlot(members), use_container_width=True)
 
-st.markdown(f"## Trophy Changes (last 24h)")
-st.plotly_chart(plots.TrophyChangesPlot(members), use_container_width=True)
+st.markdown(f"## Trophy Changes (Trophies < 10000, last 24h)")
+st.plotly_chart(plots.TrophyChangesPlot(members, ["PvP"]), use_container_width=True)
+
+st.markdown(f"## Trophy Changes (Trophies > 10000, last 24h)")
+st.plotly_chart(plots.TrophyChangesPlot(members, ["trail"]), use_container_width=True)
 
 st.markdown(f"## Three Crown Losses (last 24h\)")
 st.plotly_chart(plots.ThreeCrownLossesPlot(members), use_container_width=True)

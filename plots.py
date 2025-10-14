@@ -3,6 +3,8 @@ import plotly.graph_objects as go
 from royaleutils.clan import get_member_data
 import pandas as pd
 import concurrent.futures
+from itertools import repeat
+
 
 def WinsVsLossesPlot(clan):
     df = pd.DataFrame(get_member_data(clan.clan_tag, get_details=True))
@@ -87,10 +89,10 @@ def PowerRankingsPlot(members):
     return fig
 
 
-def _get_battle_df(member):
+def _get_battle_df(member, battle_types):
     
     battlelog = member.get_battlelog()
-    df_battle = battlelog.to_dataframe(battle_types=["PvP"])
+    df_battle = battlelog.to_dataframe(battle_types=battle_types)
     if df_battle.empty:
         return None, member
     df_battle["Battle Time"] = pd.to_datetime(df_battle["Battle Time"], utc=True).dt.tz_convert('Australia/Brisbane')
@@ -109,13 +111,13 @@ def _get_battle_df(member):
     df_battle = pd.concat([prepend, df_battle], ignore_index=True)
     return df_battle, member
 
-def TrophyChangesPlot(members):
+def TrophyChangesPlot(members, battle_types):
     fig = go.Figure()
     legend_entries = []
 
     # Use ThreadPoolExecutor to parallelize battlelog fetching and processing
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(executor.map(_get_battle_df, members))
+        results = list(executor.map(_get_battle_df, members, repeat(battle_types)))
 
     for df_battle, member in results:
         if df_battle is None or df_battle.empty:
