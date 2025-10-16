@@ -10,8 +10,6 @@ load_dotenv()
 API_TOKEN = os.getenv('API_TOKEN')
 CLAN_NAME = os.getenv('CLAN_NAME')
 
-logging.basicConfig(level=logging.DEBUG, format='%(levelname)s:%(message)s')
-
 headers = { "Authorization": f'Bearer {API_TOKEN}'}
 
 

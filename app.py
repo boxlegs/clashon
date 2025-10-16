@@ -10,6 +10,9 @@ import os
 load_dotenv()
 API_TOKEN = os.getenv('API_TOKEN')
 CLAN_NAME = os.getenv('CLAN_NAME')
+LOGGING_LEVEL = os.getenv('LOGGING_LEVEL', 'INFO')
+
+logging.basicConfig(level=LOGGING_LEVEL)
 
 # Start Loading plots
 if "clan" not in st.session_state: 
