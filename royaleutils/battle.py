@@ -126,6 +126,6 @@ class BattleLog(object):
     
 def get_battlelog_data(player_tag):
     player_tag = urllib.parse.quote(player_tag, safe='')
-    data = call_api(f'https://api.clashroyale.com/v1/players/{player_tag}/battlelog').json()
+    data = call_api(f'players/{player_tag}/battlelog')
     
     return data

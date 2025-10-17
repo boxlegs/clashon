@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def call_api(url):
     try:
-        resp = requests.get(url, headers = HEADERS)
+        resp = requests.get("https://api.clashroyale.com/v1/" + url, headers = HEADERS)
         resp.raise_for_status() # Catch auth errors/maintenance
         return resp.json()
     except requests.RequestException as exc:

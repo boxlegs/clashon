@@ -45,12 +45,12 @@ class Clan(object):
         return pd.DataFrame(member_data)
 
 def get_clan(clan_name=CLAN_NAME):
-    return call_api(f'https://api.clashroyale.com/v1/clans?name={clan_name}').json()["items"][0]
+    return call_api(f'clans?name={clan_name}')["items"][0]
 
 
 def get_member_data(clan_tag, get_details=False):
     clan_tag = urllib.parse.quote(clan_tag, safe='')
-    playerlist = call_api(f'https://api.clashroyale.com/v1/clans/{clan_tag}/members').json()
+    playerlist = call_api(f'clans/{clan_tag}/members')
     
     logging.info(f"Found {len(playerlist['items'])} members in clan {CLAN_NAME}")
     

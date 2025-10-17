@@ -40,4 +40,4 @@ class Player(object):
     
 def get_player_data(player_tag):
     player_tag = urllib.parse.quote(player_tag, safe='')
-    return call_api(f'https://api.clashroyale.com/v1/players/{player_tag}').json()
+    return call_api(f'players/{player_tag}')
