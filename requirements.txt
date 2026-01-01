@@ -1,5 +1,5 @@
 streamlit
 dotenv
 pandas
-numpy
+numpy==2.3.0
 plotly
